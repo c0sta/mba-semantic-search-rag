@@ -12,10 +12,15 @@ GOOGLE_EMBEDDING_MODEL: str = os.getenv(
 )
 GOOGLE_LLM_MODEL: str = os.getenv("GOOGLE_LLM_MODEL", "gemini-1.5-flash")
 
+OPEN_AI_KEY: str = os.getenv("OPEN_AI_KEY", "")
+OPENAI_EMBEDDING_MODEL: str = os.getenv(
+    "OPENAI_EMBEDDING_MODEL", "text-embedding-3-small"
+)
+OPENAI_LLM_MODEL: str = os.getenv("OPENAI_LLM_MODEL", "gpt-4o-mini")
 
 COLLECTION_NAME: str = os.getenv("PG_VECTOR_COLLECTION_NAME", "challenge-collection")
 CONNECTION_URL: str = os.getenv("PGVECTOR_URL", "")
 
-for k in ("GOOGLE_API_KEY", "GOOGLE_EMBEDDING_MODEL", "GOOGLE_LLM_MODEL"):
+for k in ("PGVECTOR_URL", "PG_VECTOR_COLLECTION_NAME"):
     if not os.getenv(k):
         raise ValueError(f"Missing environment variable: {k}")

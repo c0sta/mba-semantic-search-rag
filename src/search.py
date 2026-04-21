@@ -1,13 +1,10 @@
 from langchain_community.vectorstores import PGVector
-from langchain_google_genai import GoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 
 from env import (
     COLLECTION_NAME,
     CONNECTION_URL,
-    GOOGLE_API_KEY,
-    GOOGLE_EMBEDDING_MODEL,
-    GOOGLE_LLM_MODEL,
 )
+from providers import AIProviderResolution
 
 PROMPT_TEMPLATE = """
 CONTEXTO:
@@ -47,10 +44,8 @@ def search_prompt(question: str = "") -> str:
 
 
 def _search_vector_db(question: str = ""):
-    embeddings = GoogleGenerativeAIEmbeddings(
-        model=GOOGLE_EMBEDDING_MODEL,
-        google_api_key=GOOGLE_API_KEY,
-    )
+    providers = AIProviderResolution()
+    embeddings = providers["embeddings"]
 
     store = PGVector(
         embedding_function=embeddings,
@@ -76,11 +71,8 @@ def _generate_answer(question: str, context: str) -> str:
     if not context.strip():
         return DEFAULT_FALLBACK
 
-    llm = GoogleGenerativeAI(
-        model=GOOGLE_LLM_MODEL,
-        google_api_key=GOOGLE_API_KEY,
-        temperature=0,
-    )
+    providers = AIProviderResolution()
+    llm = providers["llm"]
 
     prompt = PROMPT_TEMPLATE.format(
         contexto=context,
@@ -88,7 +80,11 @@ def _generate_answer(question: str, context: str) -> str:
     )
 
     response = llm.invoke(prompt)
-    answer = str(response).strip()
+
+    if hasattr(response, "content"):
+        answer = str(response.content).strip()
+    else:
+        answer = str(response).strip()
 
     if not answer:
         return DEFAULT_FALLBACK

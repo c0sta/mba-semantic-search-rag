@@ -1,16 +1,9 @@
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.vectorstores import PGVector
 from langchain_core.documents import Document
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from env import (
-    COLLECTION_NAME,
-    CONNECTION_URL,
-    GOOGLE_API_KEY,
-    GOOGLE_EMBEDDING_MODEL,
-    PDF_PATH,
-)
+from env import COLLECTION_NAME, CONNECTION_URL, PDF_PATH, AIProviderResolution
 
 
 def ingest_pdf():
@@ -33,10 +26,8 @@ def ingest_pdf():
 
     ids = [f"doc-{i}" for i in range(len(enriched))]
 
-    embeddings = GoogleGenerativeAIEmbeddings(
-        model=GOOGLE_EMBEDDING_MODEL,
-        google_api_key=GOOGLE_API_KEY,
-    )
+    provider = AIProviderResolution()
+    embeddings = provider["embeddings"]
 
     store = PGVector(
         embedding_function=embeddings,
