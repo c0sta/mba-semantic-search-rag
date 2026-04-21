@@ -1,25 +1,16 @@
-import os
-
-from dotenv import load_dotenv
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.vectorstores import PGVector
 from langchain_core.documents import Document
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-load_dotenv()
-
-PDF_PATH: str = os.getenv("PDF_PATH", "document.pdf")
-GOOGLE_API_KEY: str = os.getenv("GOOGLE_API_KEY", "")
-GOOGLE_EMBEDDING_MODEL: str = os.getenv(
-    "GOOGLE_EMBEDDING_MODEL", "gemini-embedding-2-preview"
+from env import (
+    COLLECTION_NAME,
+    CONNECTION_URL,
+    GOOGLE_API_KEY,
+    GOOGLE_EMBEDDING_MODEL,
+    PDF_PATH,
 )
-COLLECTION_NAME: str = os.getenv("PG_VECTOR_COLLECTION_NAME", "challenge-collection")
-CONNECTION_URL: str = os.getenv("PGVECTOR_URL", "")
-
-for k in ("GOOGLE_API_KEY", "GOOGLE_EMBEDDING_MODEL", "GOOGLE_LLM_MODEL"):
-    if not os.getenv(k):
-        raise ValueError(f"Missing environment variable: {k}")
 
 
 def ingest_pdf():

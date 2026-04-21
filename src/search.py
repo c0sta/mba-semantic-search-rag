@@ -1,10 +1,13 @@
-import os
-
-from dotenv import load_dotenv
 from langchain_community.vectorstores import PGVector
 from langchain_google_genai import GoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 
-load_dotenv()
+from env import (
+    COLLECTION_NAME,
+    CONNECTION_URL,
+    GOOGLE_API_KEY,
+    GOOGLE_EMBEDDING_MODEL,
+    GOOGLE_LLM_MODEL,
+)
 
 PROMPT_TEMPLATE = """
 CONTEXTO:
@@ -35,17 +38,12 @@ RESPONDA A "PERGUNTA DO USUÁRIO"
 
 DEFAULT_FALLBACK = "Não tenho informações necessárias para responder sua pergunta."
 
-GOOGLE_API_KEY: str = os.getenv("GOOGLE_API_KEY", "")
-GOOGLE_EMBEDDING_MODEL: str = os.getenv(
-    "GOOGLE_EMBEDDING_MODEL", "gemini-embedding-2-preview"
-)
-GOOGLE_LLM_MODEL: str = os.getenv("GOOGLE_LLM_MODEL", "gemini-1.5-flash")
-COLLECTION_NAME: str = os.getenv("PG_VECTOR_COLLECTION_NAME", "challenge-collection")
-CONNECTION_URL: str = os.getenv("PGVECTOR_URL", "")
 
-for k in ("GOOGLE_API_KEY", "GOOGLE_EMBEDDING_MODEL", "GOOGLE_LLM_MODEL"):
-    if not os.getenv(k):
-        raise ValueError(f"Missing environment variable: {k}")
+def search_prompt(question: str = "") -> str:
+    result = _search_vector_db(question)
+    context = _build_context(result)
+    answer = _generate_answer(question=question, context=context)
+    return answer
 
 
 def _search_vector_db(question: str = ""):
@@ -95,13 +93,6 @@ def _generate_answer(question: str, context: str) -> str:
     if not answer:
         return DEFAULT_FALLBACK
 
-    return answer
-
-
-def search_prompt(question: str = "") -> str:
-    result = _search_vector_db(question)
-    context = _build_context(result)
-    answer = _generate_answer(question=question, context=context)
     return answer
 
 
