@@ -3,7 +3,8 @@ from langchain_community.vectorstores import PGVector
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from env import COLLECTION_NAME, CONNECTION_URL, PDF_PATH, AIProviderResolution
+from env import COLLECTION_NAME, CONNECTION_URL, PDF_PATH
+from providers import AIProviderResolution
 
 
 def ingest_pdf():
