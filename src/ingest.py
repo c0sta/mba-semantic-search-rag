@@ -11,7 +11,7 @@ def ingest_pdf():
     docs = PyPDFLoader(PDF_PATH).load()
 
     splits = RecursiveCharacterTextSplitter(
-        chunk_size=1000, chunk_overlap=200, add_start_index=False
+        chunk_size=1000, chunk_overlap=150, add_start_index=False
     ).split_documents(docs)
 
     if not splits:
