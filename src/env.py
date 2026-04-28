@@ -10,9 +10,9 @@ GOOGLE_API_KEY: str = os.getenv("GOOGLE_API_KEY", "")
 GOOGLE_EMBEDDING_MODEL: str = os.getenv(
     "GOOGLE_EMBEDDING_MODEL", "gemini-embedding-2-preview"
 )
-GOOGLE_LLM_MODEL: str = os.getenv("GOOGLE_LLM_MODEL", "gemini-1.5-flash")
+GOOGLE_LLM_MODEL: str = os.getenv("GOOGLE_LLM_MODEL", "gemini-2.5-flash")
 
-OPEN_AI_KEY: str = os.getenv("OPEN_AI_KEY", "")
+OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
 OPENAI_EMBEDDING_MODEL: str = os.getenv(
     "OPENAI_EMBEDDING_MODEL", "text-embedding-3-small"
 )

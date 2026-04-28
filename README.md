@@ -40,9 +40,14 @@ docker-compose up -d
 Criar arquivo `.env` na raiz do projeto:
 
 ```
+# Caminho do PDF que será usado pelo `ingest.py`
 PDF_PATH=document.pdf
-COLLECTION_NAME=documents
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/rag
+
+# Nome da collection do PGVECTOR. Por default: `challenge-collection` 
+PG_VECTOR_COLLECTION_NAME=challenge-collection
+
+# URL de conexão com o PostgreSQL
+PGVECTOR_URL=postgresql://postgres:postgres@localhost:5432/rag
 
 # Escolha um dos dois:
 GOOGLE_API_KEY=sua_chave_aqui  # Para Google Generative AI
@@ -70,5 +75,5 @@ python chat.py
 - `src/ingest.py` - Carrega PDF e cria embeddings
 - `src/search.py` - Busca semântica de documentos
 - `src/chat.py` - Interface CLI
-- `src/providers.py` - Resolução dos provedores de IA (`google` ou `open-ai`)
+- `src/providers.py` - Resolução dos provedores de IA (`google` ou `openai`)
 - `src/env.py` - Resolução das variáveis de ambiente

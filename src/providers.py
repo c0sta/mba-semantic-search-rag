@@ -5,7 +5,7 @@ from env import (
     GOOGLE_API_KEY,
     GOOGLE_EMBEDDING_MODEL,
     GOOGLE_LLM_MODEL,
-    OPEN_AI_KEY,
+    OPENAI_API_KEY,
     OPENAI_EMBEDDING_MODEL,
     OPENAI_LLM_MODEL,
 )
@@ -26,18 +26,20 @@ def AIProviderResolution():
             ),
         }
 
-    if OPEN_AI_KEY:
+    if OPENAI_API_KEY:
         return {
             "provider": "openai",
             "embeddings": OpenAIEmbeddings(
                 model=OPENAI_EMBEDDING_MODEL,
-                api_key=OPEN_AI_KEY,
+                api_key=OPENAI_API_KEY,
             ),
             "llm": ChatOpenAI(
                 model=OPENAI_LLM_MODEL,
-                api_key=OPEN_AI_KEY,
+                api_key=OPENAI_API_KEY,
                 temperature=0,
             ),
         }
 
-    raise ValueError("No AI provider API key found. Set GOOGLE_API_KEY or OPEN_AI_KEY.")
+    raise ValueError(
+        "No AI provider API key found. Set GOOGLE_API_KEY or OPENAI_API_KEY."
+    )
