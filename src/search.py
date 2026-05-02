@@ -54,7 +54,7 @@ def _search_vector_db(question: str = ""):
         use_jsonb=True,
     )
 
-    return store.similarity_search_with_score(question, k=3)
+    return store.similarity_search_with_score(question, k=10)
 
 
 def _build_context(result) -> str:
